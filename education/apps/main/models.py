@@ -1,6 +1,5 @@
 from django.core.validators import FileExtensionValidator
 from django.db import models
-from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 from martor.models import MartorField
 
@@ -8,9 +7,6 @@ from .utils import get_material_upload_path, get_slide_upload_path
 
 
 class Material(models.Model):
-    """
-    Material model.
-    """
 
     class Type(models.TextChoices):
         ARTICLE = ('article', _('Статья'))
@@ -70,13 +66,11 @@ class Material(models.Model):
 
 
 class Slide(models.Model):
-    """
-    Slide model for presentation material.
-    """
 
     material = models.ForeignKey(
         to=Material,
         on_delete=models.CASCADE,
+        related_name='slides',
         verbose_name=_('Материал'),
     )
     slide = models.ImageField(

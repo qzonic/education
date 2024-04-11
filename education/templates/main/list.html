@@ -1,0 +1,36 @@
+{%extends "base.html"%}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div>
+    <form action="{% url 'list' %}" method="GET">
+        <input type="text" name="search" placeholder="Введите запрос">
+    <button type="submit">Поиск</button>
+</form>
+</div>
+<div class="block">
+    <div class="materials-type">
+        {% for type, name in types %}
+            <div class="link-type">
+                <a href="{% url 'material-type' slug=type %}">{{ name }}</a>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="materials-list">
+        {% for item in materials %}
+            <div href="" class="material-item">
+                <img src="{{ item.image.url }}" class="material-item-img" alt="">
+                <div class="material-item-content">
+                    <div class="material-item-content-header">
+                        <a href="{% url 'detail-material' type=item.material_type slug=item.slug %}" class="title">{{ item.title }}</a> | <a href="{% url 'material-type' slug=item.material_type %}" class="type">{{ item.get_material_type_display }}</a>
+                    </div>
+                    <div class="material-item-content-block">
+                        {{ item.description| truncatechars:256 }}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

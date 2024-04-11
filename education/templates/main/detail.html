@@ -1,0 +1,39 @@
+{%extends "base.html"%}
+{% load martortags %}
+
+{% block title %}{{ material.title }}{% endblock %}
+
+{% block content %}
+<div href="" class="material-item">
+    <div>
+        <img src="{{ material.image.url }}" class="material-item-img" alt="">
+    </div>
+    <div class="material-item-content">
+        <div class="material-item-content-header">
+            <span class="title">{{ material.title }}</span> | <a href="{% url 'material-type' slug=material.material_type %}" class="type">{{ material.get_material_type_display }}</a>
+        </div>
+        {% if material.material_type == 'video' %}
+            <div class="material-item-content-block">
+                <video controls="" autoplay="" name="media">
+                    <source src="{{ material.video.url }}" type="video/mp4">
+                </video>
+            </div>
+        {% endif %}
+        <div class="material-item-content-block">
+           {{ material.description }}
+        </div>
+
+        <div class="material-item-content-block">
+            {{ material.content|safe_markdown }}
+        </div>
+
+        {% if material.material_type == 'presentation' and material.slides.all %}
+            <div class="material-item-content-block">
+                {% for item in material.slides.all %}
+                    <img src="{{ item.slide.url }}" width="256" height="256" class="slide">
+                {% endfor %}
+            </div>
+        {% endif %}
+   </div>
+</div>
+{% endblock %}
